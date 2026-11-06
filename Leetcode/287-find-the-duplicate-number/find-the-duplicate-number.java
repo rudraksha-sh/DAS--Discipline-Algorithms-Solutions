@@ -1,12 +1,23 @@
 class Solution {
     public int findDuplicate(int[] nums) {
-        HashMap<Integer, Integer> map = new HashMap<>();
-        int count=0;
-        for(int num:nums){
-            map.put(num, map.getOrDefault(num, 0)+1);
-            if(map.get(num)>1)return num;
+
+        int slow = nums[0];
+        int fast = nums[0];
+
+        // Phase 1: Detect the cycle
+        do {
+            slow = nums[slow];
+            fast = nums[nums[fast]];
+        } while (slow != fast);
+
+        // Phase 2: Find the entrance of the cycle
+        slow = nums[0];
+
+        while (slow != fast) {
+            slow = nums[slow];
+            fast = nums[fast];
         }
 
-        return -1;
+        return slow;
     }
 }
